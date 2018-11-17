@@ -8,10 +8,14 @@ module.exports = {
     },
 };
 
-// ... contents of webpack.config.js
-module.exports = {
-    // ...previous Webpack config...
-    module: {
+
+module.exports = {  
+   entry: './src/index.js',  
+   output: {  
+         path: path.resolve(__dirname, 'docs'),
+        filename: 'js/main.js', 
+   },  
+  module: {
         rules: [
             {
                 test: /\.m?js$/,
