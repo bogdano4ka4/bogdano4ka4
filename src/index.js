@@ -28,28 +28,63 @@ $(document).ready(function(){
     });
 });
 
-jQuery.ajax({
-	url: 'https://nit.tron.net.ua/api/product/1',
+$(document).ready(function(){
+    $(".show_xiaomi").click(function(){
+	jQuery.ajax({
+	url: 'http://nit.tron.net.ua/api/product/list/category/3',
 	method: 'get',
 	dataType: 'json',
 	success: function(json){
-		json.forEach(product => $('.product_description').append(_item_description(product)));
-		
+		json.forEach(product => $('.product_item').append(_item(product)));
 	},
 	error: function(xhr){
 		alert("An error occured: " + xhr.status + " " + xhr.statusText);
 	},
 });
-
+    });
+});
 $(document).ready(function(){
-    $(".show_xiaomi").click(function(){
-        jQuery.ajax({
-	url: 'https://nit.tron.net.ua/api/product/list/category/3',
+    $(".show_smartphones").click(function(){
+	jQuery.ajax({
+	url: 'http://nit.tron.net.ua/api/product/list/category/2',
 	method: 'get',
 	dataType: 'json',
 	success: function(json){
-		json.forEach(product => $('.product_description').append(_item_description(product)));
-		
+		json.forEach(product => $('.product_item').append(_item(product)));
+	},
+	error: function(xhr){
+		alert("An error occured: " + xhr.status + " " + xhr.statusText);
+	},
+});
+    });
+});
+
+$(document).ready(function(){
+    $(".show_apple").click(function(){
+    	$(".product_item").html('');
+	jQuery.ajax({
+	url: 'http://nit.tron.net.ua/api/product/list/category/4',
+	method: 'get',
+	dataType: 'json',
+	success: function(json){
+		var $title = $('<h1>').text("Apple");
+		json.forEach(product => $('.product_item').append(_item(product)));
+	},
+	error: function(xhr){
+		alert("An error occured: " + xhr.status + " " + xhr.statusText);
+	},
+});
+    });
+});
+
+$(document).ready(function(){
+    $(".show_notebook").click(function(){
+	jQuery.ajax({
+	url: 'http://nit.tron.net.ua/api/product/list/category/5',
+	method: 'get',
+	dataType: 'json',
+	success: function(json){
+		json.forEach(product => $('.product_item').append(_item(product)));
 	},
 	error: function(xhr){
 		alert("An error occured: " + xhr.status + " " + xhr.statusText);
