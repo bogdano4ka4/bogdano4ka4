@@ -1,44 +1,11 @@
 const path = require('path');
- 
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'docs'),
-        filename: 'js/main.js',
-    },
-};
-
-
-module.exports = {  
-   entry: './src/index.js',  
-   output: {  
-         path: path.resolve(__dirname, 'docs'),
-        filename: 'js/main.js', 
-   },  
-  module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                    },
-                },
-            },
-            // ...additional rules...
-        ],
-    },
-};
-
 // ... contents of webpack.config.js
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  
 module.exports = {
     entry: './src/index.js',  
    	output: {  
-         path: path.resolve(__dirname, 'docs'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'js/main.js', 
    },  
     module: {
@@ -52,6 +19,17 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                    },
+                },
+            },
+            // ...additional rules...
         ],
     },
     // ...previous Webpack config...
@@ -59,5 +37,6 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),
+        
     ],
 };
