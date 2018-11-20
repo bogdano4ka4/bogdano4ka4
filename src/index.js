@@ -14,8 +14,9 @@ let _item_description=require('./modules/show_description');
 
 $(document).ready(function(){
     $(".show_all").click(function(){
-        jQuery.ajax({
-	url: 'https://nit.tron.net.ua/api/product/list',
+    	$(".product_item").html('');
+	jQuery.ajax({
+	url: 'http://nit.tron.net.ua/api/product/list',
 	method: 'get',
 	dataType: 'json',
 	success: function(json){
