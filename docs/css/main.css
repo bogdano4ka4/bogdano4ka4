@@ -6323,13 +6323,14 @@ a.text-dark:hover, a.text-dark:focus {
   font-size: 50px;
   display: inline-block; }
 
-.logo_sign {
-  float: left; }
+.heading {
+  display: block;
+  background: yellow; }
 
 .btn_img {
   width: 30px;
   height: 30px; }
 
-.menu_categories {
-  display: none; }
+#categories {
+  color: #441129; }
 
