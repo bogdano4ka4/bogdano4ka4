@@ -10,99 +10,85 @@ let _item=require('./modules/show_item');
 let _item_description=require('./modules/show_description');
 let SERVER_NAME="http://nit.tron.net.ua";
 
-$(document).ready(function(){
-    $(".show_all").click(function(){
-    	$(".product_item").html('');
-	jQuery.ajax({
-	url: SERVER_NAME+'/api/product/list',
-	method: 'get',
-	dataType: 'json',
-	success: function(json){		
-		json.forEach(product => $('.product_item').append(_item(product)));
-	},
-	error: function(xhr){
-		alert("An error occured: " + xhr.status + " " + xhr.statusText);
-	},
+
+$(document).ready(function()
+{
+	$.getJSON('https://nit.tron.net.ua/api/category/list', function(data) 
+	{
+            for(var key in data){
+                $('#categories').append('<p class="load" id="' + data[key]['id']+data[key]['name']+'" ' + "data-id="+data[key]['name']+'"> ' + ' ' + data[key]['name']+'</p>');
+            }
+        $('p.load').on('click', function(){
+        	$(".product_item").html('');
+        	//console.log(this.id);
+        	var id=this.id;
+        	$.getJSON('http://nit.tron.net.ua/api/product/list/category/'+parseInt(id, 10), function(data){
+        		var view='';
+        		for(var key in data)
+        		{
+        			view+='<div class="product_item card col-xs-12 col-sm-6 col-md-3 col-lg-4" name="'+data[key]['id']+'"">';
+        			view+='<img src="'+data[key]['image_url']+'" alt="'+data[key]['name']+'" class="img-fluid product-image">';
+        			view+='<span class="product-title">Ціна: '+data[key]['name']+"</span>";
+        			view+='<span>Ціна: '+data[key]['price']+"</span>";
+        			if(data[key]['special_price']!=null){
+        				view+='<span>Акція: '+data[key]['special_price']+"</span>";
+        			}
+        			view+='<button type="button" class="btn button" name="'+data[key]['id']+'"> В корзину </button> ';
+        			view+='</div>';
+            	}
+            	$('.product_item').append(view);
+            	
+			});
+        });
+        $('div.product_item').on('click', function(){
+        	var name_=$(this).attr('name');
+        	//$(".product_item").html('');
+        	console.log(name_);
+        	});
+
+ 	});
 });
-    });
-});
 
-$(document).ready(function(){
-    $(".show_apple").click(function(){
-    	$(".product_item").html('');
-	jQuery.ajax({
-	url: 'http://nit.tron.net.ua/api/product/list/category/4',
-	method: 'get',
-	dataType: 'json',
-	success: function(json){
-		json.forEach(product => $('.product_item').append(_item_description(product)));
-	},
-	error: function(xhr){
-		alert("An error occured: " + xhr.status + " " + xhr.statusText);
-	},
-});
-    });
-});
+//$('.card').data('product-id');
 
 
-$(document).on('click','.product-buy',function(){
-	var id_num=this.id;
-	console.log(id_num);
-	$(".product_item").html('');
 
-	//var id=$this.closest('.product').data('product-id');
-	//console.log(id);
 
-});
-// $(document).ready(function(){
-//     $(".show_xiaomi").click(function(){
-// 	jQuery.ajax({
-// 	url: 'http://nit.tron.net.ua/api/product/list/category/3',
-// 	method: 'get',
-// 	dataType: 'json',
-// 	success: function(json){
 
-// 		json.forEach(product => $('.product_item').append(_item(product)));
-// 	},
-// 	error: function(xhr){
-// 		alert("An error occured: " + xhr.status + " " + xhr.statusText);
-// 	},
-// });
-//     });
-// });
-// $(document).ready(function(){
-//     $(".show_smartphones").click(function(){
-// 	jQuery.ajax({
-// 	url: 'http://nit.tron.net.ua/api/product/list/category/2',
-// 	method: 'get',
-// 	dataType: 'json',
-// 	success: function(json){
-// 		json.forEach(product => $('.product_item').append(_item(product)));
-// 	},
-// 	error: function(xhr){
-// 		alert("An error occured: " + xhr.status + " " + xhr.statusText);
-// 	},
-// });
-//     });
-// });
+
+
+
+
+
+
 
 
 
 // $(document).ready(function(){
-//     $(".show_notebook").click(function(){
-// 	jQuery.ajax({
-// 	url: 'http://nit.tron.net.ua/api/product/list/category/5',
-// 	method: 'get',
-// 	dataType: 'json',
-// 	success: function(json){
-// 		json.forEach(product => $('.product_item').append(_item(product)));
-// 	},
-// 	error: function(xhr){
-// 		alert("An error occured: " + xhr.status + " " + xhr.statusText);
-// 	},
+// 	$.getJSON('https://nit.tron.net.ua/api/category/list', function(data) {
+//             for(var key in data){
+//                 $('#categories').append('<p class="load" id="' + data[key]['id']+'" ' + "data-id="+data[key]['name']+'"> ' + ' ' + data[key]['name']+'</p>');
+//             }
+//         $('p.load').on('click', function(){
+//         	$(".product_item").html('');
+//         	//console.log(this.id);
+//         	var id=this.id;
+//         	jQuery.ajax({
+// 				url: 'http://nit.tron.net.ua/api/product/list/category/'+id,
+// 				method: 'get',
+// 				dataType: 'json',
+// 				success: function(json){
+// 					json.forEach(product => $('.product_item').append(_item(product)));
+// 					console.log(this.id);
+// 				},
+// 				error: function(xhr){
+// 					alert("An error occured: " + xhr.status + " " + xhr.statusText);
+// 					},
+// 	});
+//         });
+//  	});
 // });
-//     });
-// });
+	
 
 // function fillCategory(category) {
 //     categoriesCount ++;

@@ -4,6 +4,7 @@ let _show_view=({
 	image_url,
 	description,
 	price,
+	special_price,
 })=>{
 	let $product=$(`<div id='${id}' class="product-buy card col-xs-12 col-sm-6 col-md-4 col-lg-4">`);
 	$product.append($(`<img src="${image_url}" alt="${name}" class="img-fluid product-image">`));
