@@ -20,20 +20,25 @@ $(document).ready(function()
             }
         $('p.load').on('click', function(){
         	$(".product_item").html('');
+			$(".product_view").html('');
+        	$("#categories").slideToggle();
         	//console.log(this.id);
         	var id=this.id;
         	$.getJSON('http://nit.tron.net.ua/api/product/list/category/'+parseInt(id, 10), function(data){
+        		//var tittle='<p class="category_tittle">'+data['name']+'</p>';
+        		//console.log(tittle);
+        		//$('.category_tittle').append(tittle);
         		var view='';
         		for(var key in data)
         		{
-        			view+='<div class="product_item card col-xs-12 col-sm-6 col-md-3 col-lg-4" name="'+data[key]['id']+'"">';
+        			view+='<div class="product_item card col-xs-12 col-sm-6 col-md-3 col-lg-4" data-product-id="'+data[key]['id']+'"">';
         			view+='<img src="'+data[key]['image_url']+'" alt="'+data[key]['name']+'" class="img-fluid product-image">';
-        			view+='<span class="product-title">Ціна: '+data[key]['name']+"</span>";
-        			view+='<span>Ціна: '+data[key]['price']+"</span>";
+        			view+='<span class="product-title mx-auto">'+data[key]['name']+"</span>";
+        			view+='<span class="mx-auto">Ціна: <s>'+data[key]['price']+"</s></span>";
         			if(data[key]['special_price']!=null){
-        				view+='<span>Акція: '+data[key]['special_price']+"</span>";
+        				view+='<span class="mx-auto">Акція: '+data[key]['special_price']+"</span>";
         			}
-        			view+='<button type="button" class="btn button" name="'+data[key]['id']+'"> В корзину </button> ';
+        			view+='<button type="button" class="btn button bg-success product-buy"> В корзину </button> ';
         			view+='</div>';
             	}
             	$('.product_item').append(view);
@@ -50,6 +55,64 @@ $(document).ready(function()
 });
 
 //$('.card').data('product-id');
+
+//  $(document).ready(function()
+//  {
+// 	$.getJSON('http://nit.tron.net.ua/api/product/1', function(data){
+// 		var description='';
+// 	        description+='<div class="product_view card col-xs-12 col-sm-6 col-md-3 col-lg-4 mx-auto" >';
+// 	        description+='<p class="mx-auto">'+'<strong>'+data['name']+'</strong>.'+"</p>";
+// 	        description+='<img src="'+data['image_url']+'" alt="'+data['name']+'" class="img-fluid product-image">';
+// 	        description+='<p class="mx-auto">Опис:</p>';
+// 	        description+='<p>'+data['description']+"</p>";
+// 	        description+='<span class="product-title">Ціна: '+data['name']+"</span>";
+// 	        if(data['special_price']!=null){
+// 	        	description+='<span>Ціна: <s>'+data['price']+"</s></span>";
+// 	        description+='<span>Акція: '+data['special_price']+"</span>";
+// 	        }
+// 	        else{
+// 	        	description+='<span>Ціна: '+data['price']+"</span>";
+// 	        }
+// 	        description+='<button type="button" class="btn button bg-success" name="'+data['id']+'"> В корзину </button> ';
+// 	        description+='</div>';
+// 	    $('.product_view').append(description);
+// 	});
+// });
+
+
+
+
+
+
+$(document).on('click','.card',function(){
+	var $this=$(this);
+	console.log(this);
+	console.log($this);
+	var id=$this.closest('.card').data('product-id');
+	console.log(id);
+	$(".product_item").html('');
+	$(".product_view").html('');
+	$.getJSON('http://nit.tron.net.ua/api/product/'+id, function(data){
+		var description='';
+	        description+='<div class="product_view card col-xs-12 col-sm-6 col-md-3 col-lg-4 mx-auto" >';
+	        description+='<p class="mx-auto">'+'<strong>'+data['name']+'</strong>.'+"</p>";
+	        description+='<img src="'+data['image_url']+'" alt="'+data['name']+'" class="img-fluid product-image">';
+	        description+='<p class="mx-auto">Опис:</p>';
+	        description+='<p>'+data['description']+"</p>";
+	        description+='<span class="product-title">Ціна: '+data['name']+"</span>";
+	        if(data['special_price']!=null){
+	        	description+='<span>Ціна: <s>'+data['price']+"</s></span>";
+	        description+='<span>Акція: '+data['special_price']+"</span>";
+	        }
+	        else{
+	        	description+='<span>Ціна: '+data['price']+"</span>";
+	        }
+	        description+='<button type="button" class="btn button bg-success" name="'+data['id']+'"> В корзину </button> ';
+	        description+='</div>';
+	    $('.product_view').append(description);
+	});
+});
+
 
 
 
