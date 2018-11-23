@@ -26,13 +26,12 @@ function showGoods(){
 
 });
 }
-
 function loadItems(id){
 	$(".product_item").html('');
 	$(".product_view").html('');
     $("#categories").slideToggle();
     var tittle='<p class="category_tittle" >'+categoryDescription[id]+'</p>';
-         console.log(tittle);
+        // console.log(tittle);
          $(".category_tittle").html('');
     $('.category_tittle').append(tittle);
 	$.getJSON('http://nit.tron.net.ua/api/product/list/category/'+parseInt(id, 10), function(data){
@@ -93,18 +92,57 @@ function showDescription(id){
 
 
 var buy_item_array=[];
+var itemsInCart=[];
+var countOfItemsInCart=[];
 function buy(id){
-	var $this=$this;
-	console.log($this);
-	console.log("items id "+ id);
-	if(window.localStorage.cart){
-	var _cart=window.localStorage.cart.split('|');
-	_cart.push(id);
-	window.localStorage.setItem('cart',_cart.join('|'));
-	}
+	if (!itemsInCart.includes(id)) {
+        itemsInCart.push(id);
+        countOfItemsInCart.push(1);
+        console.log(itemsInCart+"=="+countOfItemsInCart);  
+    }
+    var product={};;
+    $.getJSON('https://nit.tron.net.ua/api/product/1', function(data){
+	    product.name=data['name'];
+	    product.description=data['description'];
+	    product.image_url=data['image_url'];
+	    product.price=data['price'];
+	    product.special_price=data['special_price'];
+	});
+	var table = document.getElementById("classTable");
+   // var row = table.insertRow(table.rows.length-1);
+    var row = table.insertRow(table.rows.length);
+        row.insertCell(0).innerHTML = product.name;
+        row.insertCell(1).innerHTML = (product.special_price || product.price);
 
-}
+        let dec = row.insertCell(2);
+        dec.innerHTML = "-";
+        var count = row.insertCell(3);
+        var index = itemsInCart.length - 1;
+        dec.onclick = function () {
+            if (countOfItemsInCart[index] > 1) {
+                count.innerHTML--;
+                countOfItemsInCart[index]--;
+            }
+        }
+        count.innerHTML = "1";
+        let inc = row.insertCell(4);
+        inc.innerHTML = "+";
+        inc.onclick = function () {
+            countOfItemsInCart[index]++;
+            count.innerHTML++;
+        }
 
+        let del = row.insertCell(5);
+        del.className = "delete-button";
+        del.onclick = function () {
+            let index = itemsInCart.indexOf(product.id);
+            table.deleteRow(index + 1);
+            itemsInCart.splice(index, 1);
+            countOfItemsInCart.splice(index, 1)
+        }
+
+    
+    }
 
 // var bought = [];
 // bought[1] = 0;
@@ -131,3 +169,21 @@ function buy(id){
 $(document).ready(function(){
 	showGoods();
 });
+
+
+// button.onclick = function (e) {
+//         e.stopPropagation();
+//         showCartView();
+//         addRowToCartTable(cartTable, product);
+//     }
+
+// function setupCartView() {
+//     document.getElementById("cart-view-send").onclick = function () {
+//         var formData = new FormData(document.forms.cart);
+//         formData.append("token", TOKEN);
+//         for (let i = 0; i < itemsInCart.length; i++) {
+//             formData.append("products[" + itemsInCart[i].id + "]", countOfItemsInCart[i]);
+//         }
+//         post(SERVER_NAME, "api/order/add", formData);
+//     }
+// }

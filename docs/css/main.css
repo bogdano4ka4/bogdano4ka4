@@ -6357,3 +6357,9 @@ a.text-dark:hover, a.text-dark:focus {
 .product_view {
   background: #ffffff; }
 
+table, td {
+  border: 1px solid black; }
+
+.table_header {
+  background-color: #d4d4d4; }
+
