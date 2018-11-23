@@ -1,7 +1,4 @@
-$(document).ready(function(){
-
-
-	$(document).ready(function()
+$(document).ready(function()
 {
 	var d = document,
     itemBox = d.querySelectorAll('.product_item'), // блок каждого товара
@@ -75,6 +72,5 @@ addEvent(d.getElementById('checkout'), 'click', openCart);
 addEvent(d.getElementById('clear_cart'), 'click', function(e){
   localStorage.removeItem('cart');
   cartCont.innerHTML = 'Корзина очишена.';
-});
 });
 });

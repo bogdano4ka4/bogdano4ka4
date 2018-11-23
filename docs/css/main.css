@@ -6317,6 +6317,10 @@ a.text-dark:hover, a.text-dark:focus {
   padding: 0;
   font-family: Arial; }
 
+.product-image {
+  max-width: 30vh;
+  max-height: 40vh; }
+
 .main_logo {
   color: #3c131a;
   font-weight: bold;
@@ -6329,7 +6333,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .heading {
   display: block;
-  background: yellow; }
+  background: #edeced; }
 
 .btn_img {
   width: 30px;
@@ -6349,4 +6353,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .product-image {
   vertical-align: middle; }
+
+.product_view {
+  background: #ffffff; }
 
