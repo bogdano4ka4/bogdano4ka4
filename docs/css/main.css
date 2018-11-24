@@ -6407,3 +6407,10 @@ a.text-dark:hover, a.text-dark:focus {
   margin: 3%;
   border: 1px solid black; }
 
+.my_btn {
+  float: left;
+  margin-left: 45%; }
+
+.product_view {
+  margin-bottom: 10%; }
+

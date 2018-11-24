@@ -158,51 +158,76 @@ function buy(id){
         product.image_url=data['image_url'];
         product.price=data['price'];
         product.special_price=data['special_price'];
-        var table = document.getElementById("classTable");
-
-        row = table.insertRow(table.rows.length);
-        row.insertCell(0).innerHTML = product.name;
-        row.insertCell(1).innerHTML = (product.special_price || product.price);
-
-        let dec = row.insertCell(2);
-        dec.innerHTML ='&darr;';
-        count = row.insertCell(3);
-        index= itemsInCart.length - 1;
-        dec.onclick = function () {
-            if (countOfItemsInCart[index] > 1) {
-                count.innerHTML--;
-                countOfItemsInCart[index]--;
-                row.deleteCell(1);
-                product.price=product.price/2;
-                product.special_price=product.special_price/2;
-                row.insertCell(1).innerHTML = (product.special_price || product.price);
-            }
+        var table ='';
+        /**                    
+                    <th class="table-info">Ціна</th>
+                    <th class="table-info">Менше</th>
+                    <th class="table-info">Кількість</th>
+                    <th class="table-info">Більше</th>
+                    <th class="table-info">Видалити</th>      
+                    </tr>
+        */
+        table+='<tr>';
+        table+='<th class="table-info">'+product.name+'</th>';
+        if(product.special_price==null){
+         table+='<th class="table-info">'+product.price+'</th>';
+        }else{
+             table+='<th class="table-info">'+product.special_price+'</th>';
         }
-        count.innerHTML = "1";
-        let inc = row.insertCell(4);
-        inc.innerHTML = '&uarr;';
-        inc.onclick = function () {
-            countOfItemsInCart[index]++;
-            count.innerHTML++;
-            row.deleteCell(1);
-            var price=product.price/count;
-            product.price=product.price+price;
-            product.special_price=product.special_price*2;
-            row.insertCell(1).innerHTML = (product.special_price || product.price);
-        }
-        let del = row.insertCell(5);
-        var input_img=' <img class="btn_img" src="img/delete.png" alt="rabish"onclick="deleteRow(product,this)">';
-        del.innerHTML=input_img;
+        table+='<th class="table-info">'+'&darr;'+'</th>';
+        table+='<th class="table-info">'+'Кількість'+'</th>';
+        table+='<th class="table-info">'+'&uarr;'+'</th>';
+        table+='<th class="table-info">'+' <img class="btn_img" src="img/delete.png" alt="rabish"onclick="deleteRow(product,this)">'+'</th>';
+        table+='</tr>';
+         $('#classTable').append(table);
+        // row = table.insertRow(table.rows.length);
+        // row.insertCell(0).innerHTML = product.name;
+        // row.insertCell(1).innerHTML = (product.special_price || product.price);
+
+        
+        // $('#classTable').append(r);
+        // let dec = row.insertCell(2);
+        // dec.innerHTML ='&darr;';
+        // count = row.insertCell(3);
+        // index= itemsInCart.length - 1;
+        // dec.onclick = function () {
+        //     if (countOfItemsInCart[index] > 1) {
+        //         var q=$(this).parentNode.parentNode.rowIndex;
+        //         console.log(q+'ddf');
+        //         count.innerHTML--;
+        //         countOfItemsInCart[index]--;
+        //         row.deleteCell(1);
+        //         product.price=product.price/2;
+        //         product.special_price=product.special_price/2;
+        //         row.insertCell(1).innerHTML = (product.special_price || product.price);
+        //     }
+        // }
+        // count.innerHTML = "1";
+        // let inc = row.insertCell(4);
+        // inc.innerHTML = '&uarr;';
+        // inc.onclick = function () {
+        //     countOfItemsInCart[index]++;
+        //     count.innerHTML++;
+        //     row.deleteCell(1);
+        //     var price=product.price/count;
+        //     product.price=product.price+price;
+        //     product.special_price=product.special_price*2;
+        //     row.insertCell(1).innerHTML = (product.special_price || product.price);
+        // }
+        // let del = row.insertCell(5);
+        // var input_img=' <img class="btn_img" src="img/delete.png" alt="rabish"onclick="deleteRow(product,this)">';
+        // del.innerHTML=input_img;
     });
-     }else{
-        row.deleteCell(1);
-        product.price=product.price*2;
-        product.special_price=product.special_price*2;
-        row.insertCell(1).innerHTML = (product.special_price || product.price);
-        countOfItemsInCart[index]++;
-            count.innerHTML++;
+     // }else{
+     //    row.deleteCell(1);
+     //    var price=product.price/countOfItemsInCart[index];
+     //    product.price=product.price+price;
+     //    product.special_price=product.special_price*2;
+     //    row.insertCell(1).innerHTML = (product.special_price || product.price);
+     //    countOfItemsInCart[index]++;
+     //        count.innerHTML++;
 
-     }
+     // }
 }
 $(document).on('click','.cancel',function(){
     showPrewiew(1);
