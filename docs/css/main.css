@@ -6322,11 +6322,6 @@ a.text-dark:hover, a.text-dark:focus {
   text-align: center;
   margin: 20%; }
 
-.product-image {
-  margin: 2%;
-  max-width: 32vh;
-  max-height: 40vh; }
-
 .product-title {
   color: #050505;
   font-weight: bold; }
@@ -6391,7 +6386,11 @@ a.text-dark:hover, a.text-dark:focus {
   transition: 2s; }
 
 .product-image {
-  vertical-align: middle; }
+  vertical-align: middle;
+  margin: 2%;
+  max-width: 32vh;
+  max-height: 40vh;
+  object-fit: contain; }
 
 .product_view {
   background: #ffffff; }
