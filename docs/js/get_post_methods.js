@@ -171,7 +171,7 @@ function buy(id){
         row.insertCell(0).innerHTML = product.name;
         row.insertCell(1).innerHTML = (product.special_price || product.price);
         count = row.insertCell(2);
-        index= itemsToBuy.length - 1;
+        index= itemsToBuy.indexOf(product.id);
         count.innerHTML = "1";
         let del = row.insertCell(3);
         var input_img=' <img class="btn_img my_btn" src="img/delete.png" alt="rabish"onclick="deleteRow(product,this)">';
@@ -179,10 +179,11 @@ function buy(id){
     });
      }else{
         row.deleteCell(1);
-        row.insertCell(1).innerHTML = (product.special_price || product.price);
-        amountItems[index]++;
+        var plus=itemsToBuy.indexOf(product.id);
+        row.insertCell(1).innerHTML = ((product.special_price || product.price)*amountItems[plus]);
+        amountItems[plus]++;
         count.innerHTML++;
-
+        console.log(itemsToBuy+"-"+amountItems);
      }
 }
 $(document).on('click','.cancel',function(){
@@ -197,10 +198,8 @@ function deleteRow(product, r) {
     console.log(index+"index");
     itemsToBuy.splice(index, 1);
     amountItems.splice(index, 1)
-    console.log(itemsToBuy+"---"+amountItems )
-    console.log(itemsToBuy.length+"zzzzz");
     if(itemsToBuy.length==0){
-        showPrewiew(1);
+        showPrewiew();
     }
 }
 
