@@ -2,7 +2,6 @@
 
 window.jQuery = $;
 window.$ = $;
-
 //showing all products before choosing category
 function showPrewiew(){
     $(".product_item").html('');
@@ -46,14 +45,19 @@ var categoryDescription=[];
 function showGoods(){
  $.getJSON('https://nit.tron.net.ua/api/category/list', function(data) {
   var cat='<div>';
+   cat+='<p class="loadAll">All products</p>';
+   categoryDescription.push('All products');
    for(var key in data){
     cat+='<p class="load" data-category-id="'+data[key]['id']+'">'+data[key]['name']+'</p>';
     categoryDescription.push(data[key]['description']);
         }
+
         cat+='</div>'
-        
-        
         $('#categories').append(cat);
+         $('p.loadAll').on('click', function(){
+            $("#categories").slideToggle();
+            showPrewiew();
+        });
         $('p.load').on('click', function(){
          var id = $(this).attr('data-category-id');
          //console.log(id);
@@ -75,7 +79,7 @@ function loadItems(id){
     $(".empty_cart").css("display",'none');
     $(".bbb").css('display','none');
     
-    var tittle='<p class="category_tittle" >'+categoryDescription[id-2]+'</p>';
+    var tittle='<p class="category_tittle" >'+categoryDescription[id-1]+'</p>';
         // console.log(tittle);
          $(".category_tittle").html('');
     $('.category_tittle').append(tittle);
@@ -182,7 +186,7 @@ function buy(id){
      }
 }
 $(document).on('click','.cancel',function(){
-    showPrewiew();
+    showPrewiew(1);
     $('.bbb').css('display','none');
 });
 //delete selected item from cart
@@ -196,7 +200,7 @@ function deleteRow(product, r) {
     console.log(itemsToBuy+"---"+amountItems )
     console.log(itemsToBuy.length+"zzzzz");
     if(itemsToBuy.length==0){
-        showPrewiew();
+        showPrewiew(1);
     }
 }
 
@@ -218,6 +222,16 @@ function cartCliked(){
         }
     })
 };
+
+
+$(document).ready(function(){
+    showPrewiew(1);
+    showGoods();
+    cartCliked();
+    makePost();
+});
+
+
 
 var products={};
 var postData={};
@@ -255,7 +269,7 @@ function makePost()
                   postData["products[" + itemsToBuy[i] + "]"] = amountItems[i]
                 }
                 console.log(postData);
-                 $.post("https://nit.tron.net.ua/api/order/add",
+                 $.post("http://nit.tron.net.ua/api/order/add",
                 {
                     token:"m4Ff6tdT_yBrNChFq45q",
                     name: name1,
@@ -277,10 +291,3 @@ function makePost()
         }
     })
 };
-
-$(document).ready(function(){
-    showPrewiew();
-    showGoods();
-    cartCliked();
-    makePost();
-});
