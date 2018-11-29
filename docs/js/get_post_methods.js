@@ -16,7 +16,7 @@ function showPrewiew(){
                 var view='';
                 for(var key in data)
                 {
-                    view+='<div class="product_item card col-xs-12 col-sm-6 col-md-6 col-lg-4" data-product-id="'+data[key]['id']+'">';
+                    view+='<div class="product_item card col-xs-12 col-sm-12 col-md-6 col-lg-4" data-product-id="'+data[key]['id']+'">';
                     view+='<img src="'+data[key]['image_url']+'" alt="'+data[key]['id']+'" class="img-fluid product-image mx-auto"data-product-id="'+data[key]['id']+'">';
                     view+='<span class="product-title mx-auto" data-product-id="'+data[key]['id']+'">'+data[key]['name']+"</span>";
                     if(data[key]['special_price']!=null){
@@ -87,7 +87,7 @@ function loadItems(id){
                 var view='';
                 for(var key in data)
                 {
-                    view+='<div class="product_item card col-xs-12 col-sm-6 col-md-6 col-lg-4" data-product-id="'+data[key]['id']+'">';
+                    view+='<div class="product_item card col-xs-12 col-sm-12 col-md-6 col-lg-4" data-product-id="'+data[key]['id']+'">';
                     view+='<img src="'+data[key]['image_url']+'" alt="'+data[key]['id']+'" class="img-fluid product-image mx-auto"data-product-id="'+data[key]['id']+'">';
                     view+='<span class="product-title mx-auto" data-product-id="'+data[key]['id']+'">'+data[key]['name']+"</span>";
                     if(data[key]['special_price']!=null){
