@@ -138,93 +138,110 @@ function showDescription(id){
     }
 }
 
-
-
-var itemsToBuy=[];
-var amountItems=[];
-var row;
-var count;
-var product={};
-var index;
-var purschase=false;
-var sum;
 //buying product realization
+//making an array with id and items, add items to local storage
 function buy(id){
-    $(".product_item").html('');
-    $(".product_view").html('');
-    $(".buyframe").css("display",'block');
-    $(".empty_cart").css("display",'none');
-    $(".bbb").css('display','block');
-    
-    if (!itemsToBuy.includes(id)) {
-        itemsToBuy.push(id);
-        amountItems.push(1);
     $.getJSON('https://nit.tron.net.ua/api/product/'+id, function(data){
+        var product={};
         product.id=data['id'];
         product.name=data['name'];
         product.description=data['description'];
         product.image_url=data['image_url'];
         product.price=data['price'];
         product.special_price=data['special_price'];
-        var table = document.getElementById("classTable");
-        row = table.insertRow(table.rows.length);
-        row.insertCell(0).innerHTML = product.name;
-        row.insertCell(1).innerHTML = (product.special_price || product.price);
-        count = row.insertCell(2);
-        index= itemsToBuy.indexOf(product.id);
-        count.innerHTML = "1";
-        let del = row.insertCell(3);
-        var input_img=' <img class="btn_img my_btn" src="img/delete.png" alt="rabish"onclick="deleteRow(product,this)">';
-        del.innerHTML=input_img;
-    });
-     }else{
-        row.deleteCell(1);
-        var plus=itemsToBuy.indexOf(product.id);
-        row.insertCell(1).innerHTML = ((product.special_price || product.price)*amountItems[plus]);
-        amountItems[plus]++;
-        count.innerHTML++;
-        console.log(itemsToBuy+"-"+amountItems);
-     }
-}
-$(document).on('click','.cancel',function(){
-    showPrewiew(1);
-    $('.bbb').css('display','none');
-});
-//delete selected item from cart
-function deleteRow(product, r) {
-    var i = r.parentNode.parentNode.rowIndex;
-    document.getElementById("classTable").deleteRow(i);
-    let index = itemsToBuy.indexOf(product.id);
-    console.log(index+"index");
-    itemsToBuy.splice(index, 1);
-    amountItems.splice(index, 1)
-    if(itemsToBuy.length==0){
-        showPrewiew();
-    }
-}
+        var number = 1;
+        var pr={id: product.id,name: product.name,price:product.price,spec_pr:product.special_price};
+        var myJSON = JSON.stringify(pr);
 
+        var localSvalue = localStorage.getItem(myJSON);
+        if(localSvalue != null){
+            number = +localSvalue;
+            number++;
+        }
+        localStorage.setItem(myJSON, number);
+        product.amount=number;
+        alert(product.name +", додано у кошик");
+        
+        showPrewiew();
+        console.log(localStorage);
+    });
+}
+//var arr = JSON.parse(localStorage.key(i));
 //shows list of chosen products
 function cartCliked(){
     $('.cart').on('click',function(){
         $(".product_item").html('');
-            $(".product_view").html('');
-            $(".category_tittle").html('');
-            $(".empty_cart").css("display",'none');
-        if(itemsToBuy.length!=0){
-            $(".buyframe").css("display",'block');
-            $('.bbb').css('display','block');
-           // $("#classTable").css("display",'block');
-        }else{
-            $(".empty_cart").css("display",'block');
-            
-            $(".buyframe").css("display",'block');
+        $(".product_view").html('');
+        $(".buyframe").css("display",'block');
+        $(".empty_cart").css("display",'none');
+        $(".bbb").css('display','block');
+        $("#classTable").html('');
+        var table ='';
+            table+='<thead>';
+            table+=' <tr>';
+            table+='<th class="table-info">Назва</th>';
+            table+='<th class="table-info">Ціна</th>';
+            table+='<th class="table-info">Кількість</th>';
+            table+='<th class="table-info">Видалити</th>';     
+            table+='</tr>';
+            table+='</thead>';
+        for(var i=0; i<localStorage.length;i++){
+            var js=localStorage.key(i);
+            //console.log("js+ "+js);
+            var key = JSON.parse(localStorage.key(i));
+            var value = localStorage.getItem(localStorage.key(i));
+            table+='<thead>';
+            table+=' <tr>';
+            table+='<th >'+key.name+'</th>';
+            table+='<th>'+(key.special_price||key.price)*value+'</th>';
+            table+='<th >'+value+'</th>';
+            table+='<th ><img class="btn_img my_btn" src="img/delete.png" alt="rabish"onclick="deleteRow('+key.id+''+ ',this)"></th>';     
+            table+='</tr>';
+            table+='</thead>';
+
         }
+        $('#classTable').append(table);
+
     })
 };
+ 
+//delete selected item from cart
+function deleteRow(product, r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("classTable").deleteRow(i);
+    console.log(product);
+    for(var i=0; i<localStorage.length;i++){
+        var z=localStorage.key(i);
+        var key = JSON.parse(localStorage.key(i));
+        if(key.id==product){
+            localStorage.removeItem(z);
+        }
+    }
+    if(localStorage.length==0){
+        showPrewiew();
+    }
+}
+function clearLocalStorage(){
+    localStorage.clear();
+}
+//return you to the main menu
+$(document).on('click','.cancel',function(){
+    showPrewiew();
+    $('.bbb').css('display','none');
+});
+
+
+//clear you cart
+$(document).on('click','.deleteLoc',function(){
+    clearLocalStorage();
+    showPrewiew();
+    $('.bbb').css('display','none');
+});
 
 
 $(document).ready(function(){
-    showPrewiew(1);
+   // localStorage.clear();
+    showPrewiew();
     showGoods();
     cartCliked();
     makePost();
@@ -239,7 +256,7 @@ function makePost()
 {
     $('.buy').on('click',function()
     {
-        if(itemsToBuy.length!=0)
+        if(localStorage.length!=0)
         {
                 var name1=document.getElementById('namee').value;
                 if(name1.length==0){
@@ -255,7 +272,7 @@ function makePost()
                 }
                     
                 var email1=document.getElementById('email').value;
-                console.log(name+" "+ email+" "+ phone1);
+                //console.log(name+" "+ email+" "+ phone1);
                 postData = 
                 {
                     token:"m4Ff6tdT_yBrNChFq45q",
@@ -263,27 +280,26 @@ function makePost()
                     phone: phone1,
                     email: email1,
                 }
-                for(var i=0;i<itemsToBuy.length;i++) 
+                for(var i=0;i<localStorage.length;i++) 
                 {
-                  postData["products[" + itemsToBuy[i] + "]"] = amountItems[i]
+                    var itemsToBuy = JSON.parse(localStorage.key(i));
+                    var value = localStorage.getItem(localStorage.key(i));
+                  postData["products[" + itemsToBuy.id+ "]"] = value
                 }
                 console.log(postData);
-                 $.post("http://nit.tron.net.ua/api/order/add",
+                 $.post("https://nit.tron.net.ua/api/order/add",
                 {
-                    token:"m4Ff6tdT_yBrNChFq45q",
-                    name: name1,
-                    phone: phone1,
-                    email: email1,
                     postData
                 },
                 function(postData,status){
                     console.log("Data: " + postData + "\nStatus: " + status);
                     alert("Шановний(на), "+name1+"\nОчікуйте доставки!");
-                    
-                    showPrewiew(1);
+                    clearLocalStorage();
+                    showPrewiew();
                     document.getElementById('email').value='';
                     document.getElementById('mobile').value='';
                     document.getElementById('namee').value='';
+                    
                 });
         }else{
             alert('У вас немає товарів у чеку');
